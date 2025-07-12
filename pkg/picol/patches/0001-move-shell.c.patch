@@ -1,0 +1,18 @@
+From cdc832f506433dd5365c2b88034b7ef98cd1db4d Mon Sep 17 00:00:00 2001
+From: Francois Perrad <francois.perrad@gadz.org>
+Date: Mon, 26 Jan 2026 22:07:23 +0100
+Subject: [PATCH 1/4] move shell.c
+
+Signed-off-by: Francois Perrad <francois.perrad@gadz.org>
+---
+ shell.c => examples/shell.c | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ rename shell.c => examples/shell.c (100%)
+
+diff --git a/shell.c b/examples/shell.c
+similarity index 100%
+rename from shell.c
+rename to examples/shell.c
+-- 
+2.45.2
+

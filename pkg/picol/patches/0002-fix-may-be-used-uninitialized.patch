@@ -1,0 +1,35 @@
+From 11bf24ca462664f6c8a2eaa5de357840d9be1c05 Mon Sep 17 00:00:00 2001
+From: Francois Perrad <francois.perrad@gadz.org>
+Date: Mon, 26 Jan 2026 21:38:41 +0100
+Subject: [PATCH 2/4] fix may be used uninitialized
+
+Signed-off-by: Francois Perrad <francois.perrad@gadz.org>
+---
+ picol.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/picol.h b/picol.h
+index 1a49532..d3935cb 100644
+--- a/picol.h
++++ b/picol.h
+@@ -3877,7 +3877,7 @@ PICOL_COMMAND(lmap) {
+ PICOL_COMMAND(lrange) {
+     char buf[PICOL_MAX_STR] = "", buf2[PICOL_MAX_STR] = "";
+     const char* cp;
+-    int from, to, a = 0, toend = 0;
++    int from, to = 0, a = 0, toend = 0;
+     PICOL_UNUSED(pd);
+ 
+     PICOL_ARITY2(argc == 4, "lrange list first last");
+@@ -5144,6 +5144,8 @@ PICOL_COMMAND(try) {
+             interp->result,
+             PICOL_BUFFER_SIZE(handler_result)
+         );
++    } else {
++        handler_rc = PICOL_ERR;
+     }
+     /* Run the "finally" script. If it fails, return its result. */
+     if (argc == 4 || argc == 8) {
+-- 
+2.45.2
+

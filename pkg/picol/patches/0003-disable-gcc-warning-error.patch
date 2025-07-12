@@ -1,0 +1,36 @@
+From a80ec1bf5fc64420a4c6f3c8cf117b74ab1a9860 Mon Sep 17 00:00:00 2001
+From: Francois Perrad <francois.perrad@gadz.org>
+Date: Mon, 26 Jan 2026 21:54:24 +0100
+Subject: [PATCH 3/4] disable gcc warning/error
+
+Signed-off-by: Francois Perrad <francois.perrad@gadz.org>
+---
+ picol.h | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/picol.h b/picol.h
+index d3935cb..574f94c 100644
+--- a/picol.h
++++ b/picol.h
+@@ -560,6 +560,11 @@ picolResult picolRenameCmd(picolInterp *interp, const char *from,
+ 
+ #ifdef PICOL_IMPLEMENTATION
+ 
++#pragma GCC diagnostic push
++#pragma GCC diagnostic ignored "-Wformat-nonliteral"
++#pragma GCC diagnostic ignored "-Wchar-subscripts"
++#pragma GCC diagnostic ignored "-Wint-conversion"
++
+ /* --------------------------------------------------------- parser functions */
+ void picolInitParser(picolParser* p, const char* text) {
+     p->text  = p->pos = text;
+@@ -5488,4 +5493,6 @@ picolInterp* picolCreateInterp2(int register_core_cmds, int randomize) {
+     return interp;
+ }
+ 
++#pragma GCC diagnostic pop
++
+ #endif /* PICOL_IMPLEMENTATION */
+-- 
+2.45.2
+
