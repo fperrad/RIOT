@@ -1,0 +1,3 @@
+INCLUDES += -I$(PKGDIRBASE)/tap4embedded
+
+CFLAGS += -DTAP_C99

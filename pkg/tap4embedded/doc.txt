@@ -1,0 +1,12 @@
+/**
+ * @defgroup pkg_tap4embedded tap4embedded
+ * @ingroup  pkg
+ * @brief    a TAP producer library designed for C embedded.
+ * @see      https://framagit.org/fperrad/tap4embedded
+ *
+ * It allows a simple and efficient way to write unit tests in C.
+ *
+ * The output uses the Test Anything Protocol,
+ * that allows a compatibility with the Perl QA ecosystem.
+ *
+ */
