@@ -1,0 +1,123 @@
+From bc500c2c5ba54405c14c140c37daf471817524c1 Mon Sep 17 00:00:00 2001
+From: Francois Perrad <francois.perrad@gadz.org>
+Date: Wed, 18 Jun 2025 00:58:28 +0200
+Subject: [PATCH 2/4] some static
+
+Signed-off-by: Francois Perrad <francois.perrad@gadz.org>
+---
+ picol.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
+
+diff --git a/picol.c b/picol.c
+index 3c7cf7f..ce5ec56 100644
+--- a/picol.c
++++ b/picol.c
+@@ -68,14 +68,14 @@ struct picolInterp {
+     char *result;
+ };
+ 
+-void picolInitParser(struct picolParser *p, const char *text) {
++static void picolInitParser(struct picolParser *p, const char *text) {
+     p->text = p->p = text;
+     p->len = strlen(text);
+     p->start = 0; p->end = 0; p->insidequote = 0;
+     p->type = PT_EOL;
+ }
+ 
+-int picolParseSep(struct picolParser *p) {
++static int picolParseSep(struct picolParser *p) {
+     p->start = p->p;
+     while(*p->p == ' ' || *p->p == '\t' || *p->p == '\n' || *p->p == '\r') {
+         p->p++; p->len--;
+@@ -85,7 +85,7 @@ int picolParseSep(struct picolParser *p) {
+     return PICOL_OK;
+ }
+ 
+-int picolParseEol(struct picolParser *p) {
++static int picolParseEol(struct picolParser *p) {
+     p->start = p->p;
+     while(*p->p == ' ' || *p->p == '\t' || *p->p == '\n' || *p->p == '\r' ||
+           *p->p == ';')
+@@ -97,7 +97,7 @@ int picolParseEol(struct picolParser *p) {
+     return PICOL_OK;
+ }
+ 
+-int picolParseCommand(struct picolParser *p) {
++static int picolParseCommand(struct picolParser *p) {
+     int level = 1;
+     int blevel = 0;
+     p->start = ++p->p; p->len--;
+@@ -125,7 +125,7 @@ int picolParseCommand(struct picolParser *p) {
+     return PICOL_OK;
+ }
+ 
+-int picolParseVar(struct picolParser *p) {
++static int picolParseVar(struct picolParser *p) {
+     p->start = ++p->p; p->len--; /* skip the $ */
+     while(1) {
+         if ((*p->p >= 'a' && *p->p <= 'z') || (*p->p >= 'A' && *p->p <= 'Z') ||
+@@ -145,7 +145,7 @@ int picolParseVar(struct picolParser *p) {
+     return PICOL_OK;
+ }
+ 
+-int picolParseBrace(struct picolParser *p) {
++static int picolParseBrace(struct picolParser *p) {
+     int level = 1;
+     p->start = ++p->p; p->len--;
+     while(1) {
+@@ -168,7 +168,7 @@ int picolParseBrace(struct picolParser *p) {
+     return PICOL_OK; /* unreached */
+ }
+ 
+-int picolParseString(struct picolParser *p) {
++static int picolParseString(struct picolParser *p) {
+     int newword = (p->type == PT_SEP || p->type == PT_EOL || p->type == PT_STR);
+     if (newword && *p->p == '{') return picolParseBrace(p);
+     else if (newword && *p->p == '"') {
+@@ -214,14 +214,14 @@ int picolParseString(struct picolParser *p) {
+     return PICOL_OK; /* unreached */
+ }
+ 
+-int picolParseComment(struct picolParser *p) {
++static int picolParseComment(struct picolParser *p) {
+     while(p->len && *p->p != '\n') {
+         p->p++; p->len--;
+     }
+     return PICOL_OK;
+ }
+ 
+-int picolGetToken(struct picolParser *p) {
++static int picolGetToken(struct picolParser *p) {
+     while(1) {
+         if (!p->len) {
+             if (p->type != PT_EOL && p->type != PT_EOF)
+@@ -307,7 +307,7 @@ int picolSetVar(struct picolInterp *i, const char *name, const char *val) {
+     return PICOL_OK;
+ }
+ 
+-struct picolCmd *picolGetCommand(struct picolInterp *i, const char *name) {
++static struct picolCmd *picolGetCommand(struct picolInterp *i, const char *name) {
+     struct picolCmd *c = i->commands;
+     while(c) {
+         if (strcmp(c->name,name) == 0) return c;
+@@ -504,7 +504,7 @@ int picolCommandRetCodes(struct picolInterp *i, int argc, char **argv, void *pd)
+     return PICOL_OK;
+ }
+ 
+-void picolDropCallFrame(struct picolInterp *i) {
++static void picolDropCallFrame(struct picolInterp *i) {
+     struct picolCallFrame *cf = i->callframe;
+     struct picolVar *v = cf->vars, *t;
+     while(v) {
+@@ -518,7 +518,7 @@ void picolDropCallFrame(struct picolInterp *i) {
+     free(cf);
+ }
+ 
+-int picolCommandCallProc(struct picolInterp *i, int argc, char **argv, void *pd) {
++static int picolCommandCallProc(struct picolInterp *i, int argc, char **argv, void *pd) {
+     char **x=pd, *alist=x[0], *body=x[1], *p=strdup(alist), *tofree;
+     struct picolCallFrame *cf = malloc(sizeof(*cf));
+     int arity = 0, done = 0, errcode = PICOL_OK;
+-- 
+2.45.2
+

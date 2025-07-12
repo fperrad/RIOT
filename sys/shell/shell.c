@@ -112,7 +112,7 @@ static shell_command_handler_t search_commands_xfa(char *command)
     return NULL;
 }
 
-static shell_command_handler_t find_handler(
+shell_command_handler_t find_handler(
         const shell_command_t *command_list, char *command)
 {
     shell_command_handler_t handler = NULL;
@@ -128,7 +128,7 @@ static shell_command_handler_t find_handler(
     return handler;
 }
 
-static void print_commands_json(const shell_command_t *cmd_list)
+void print_commands_json(const shell_command_t *cmd_list)
 {
     bool first = true;
 
@@ -177,7 +177,7 @@ static void print_commands_xfa(void)
     }
 }
 
-static void print_help(const shell_command_t *command_list)
+void print_help(const shell_command_t *command_list)
 {
     printf("Command              Description\n"
            "---------------------------------------\n");

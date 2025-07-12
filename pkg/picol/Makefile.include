@@ -1,0 +1,4 @@
+INCLUDES += -I$(PKGDIRBASE)/picol
+INCLUDES += -I$(RIOTPKG)/picol/include
+
+DIRS += $(RIOTPKG)/picol/contrib

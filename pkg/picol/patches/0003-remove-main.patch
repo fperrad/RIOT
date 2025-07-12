@@ -1,0 +1,30 @@
+From 6dc1f1795e8f864d3357e05a945cd5ef33ab10e2 Mon Sep 17 00:00:00 2001
+From: Francois Perrad <francois.perrad@gadz.org>
+Date: Tue, 17 Jun 2025 20:15:03 +0200
+Subject: [PATCH 3/4] remove main
+
+Signed-off-by: Francois Perrad <francois.perrad@gadz.org>
+---
+ picol.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/picol.c b/picol.c
+index ce5ec56..77eaff7 100644
+--- a/picol.c
++++ b/picol.c
+@@ -600,6 +600,7 @@ void picolRegisterCoreCommands(struct picolInterp *i) {
+     picolRegisterCommand(i,"return",picolCommandReturn,NULL);
+ }
+ 
++#ifndef PICOL_LIB
+ int main(int argc, char **argv) {
+     struct picolInterp interp;
+     picolInitInterp(&interp);
+@@ -627,3 +628,4 @@ int main(int argc, char **argv) {
+     }
+     return 0;
+ }
++#endif
+-- 
+2.45.2
+

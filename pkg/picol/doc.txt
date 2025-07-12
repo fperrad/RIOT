@@ -1,0 +1,21 @@
+/**
+ * @defgroup pkg_picol Picol
+ * @ingroup  pkg
+ * @brief    Picol is a Tcl-alike interpreter in 500 lines of code.
+ * @see      https://github.com/antirez/picol.git
+ *
+ * The contrib part supplies:
+ * - a shell loop `riot_picol_shell_run`
+ * - a command `exec` which allow to call a command registered for the standard Shell
+ *
+ * Typical use:
+ * ```
+ *    struct picolInterp interp;
+ *    picolInitInterp(&interp);
+ *    picolRegisterCoreCommands(&interp);
+ *    (void)picolRegisterCommand(&interp, "exec", riot_picol_command_exec, my_commands);
+ *    (void)picolSetVar(&interp, "RIOT_BOARD", RIOT_BOARD);
+ *    picolEval(&interp, "puts \"This is Picol shell on $RIOT_BOARD\"");
+ *    riot_picol_shell_run(&interp);
+ * ```
+ */

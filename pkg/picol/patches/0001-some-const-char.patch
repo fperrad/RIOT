@@ -1,0 +1,120 @@
+From 18926dd1a61a13e34e4d10f797b410de9ea4b8da Mon Sep 17 00:00:00 2001
+From: Francois Perrad <francois.perrad@gadz.org>
+Date: Wed, 18 Jun 2025 00:26:58 +0200
+Subject: [PATCH 1/4] some const char *
+
+Signed-off-by: Francois Perrad <francois.perrad@gadz.org>
+---
+ picol.c | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
+
+diff --git a/picol.c b/picol.c
+index c309843..3c7cf7f 100644
+--- a/picol.c
++++ b/picol.c
+@@ -32,11 +32,11 @@ enum {PICOL_OK, PICOL_ERR, PICOL_RETURN, PICOL_BREAK, PICOL_CONTINUE};
+ enum {PT_ESC,PT_STR,PT_CMD,PT_VAR,PT_SEP,PT_EOL,PT_EOF};
+ 
+ struct picolParser {
+-    char *text;
+-    char *p; /* current text position */
++    const char *text;
++    const char *p; /* current text position */
+     int len; /* remaining length */
+-    char *start; /* token start */
+-    char *end; /* token end */
++    const char *start; /* token start */
++    const char *end; /* token end */
+     int type; /* token type, PT_... */
+     int insidequote; /* True if inside " " */
+ };
+@@ -68,7 +68,7 @@ struct picolInterp {
+     char *result;
+ };
+ 
+-void picolInitParser(struct picolParser *p, char *text) {
++void picolInitParser(struct picolParser *p, const char *text) {
+     p->text = p->p = text;
+     p->len = strlen(text);
+     p->start = 0; p->end = 0; p->insidequote = 0;
+@@ -263,12 +263,12 @@ void picolInitInterp(struct picolInterp *i) {
+     i->result = strdup("");
+ }
+ 
+-void picolSetResult(struct picolInterp *i, char *s) {
++void picolSetResult(struct picolInterp *i, const char *s) {
+     free(i->result);
+     i->result = strdup(s);
+ }
+ 
+-struct picolVar *picolGetVar(struct picolInterp *i, char *name) {
++struct picolVar *picolGetVar(struct picolInterp *i, const char *name) {
+     struct picolVar *v = i->callframe->vars;
+     while(v) {
+         if (strcmp(v->name,name) == 0) return v;
+@@ -277,7 +277,7 @@ struct picolVar *picolGetVar(struct picolInterp *i, char *name) {
+     return NULL;
+ }
+ 
+-int picolSetVar(struct picolInterp *i, char *name, char *val) {
++int picolSetVar(struct picolInterp *i, const char *name, const char *val) {
+     struct picolVar *v = picolGetVar(i,name);
+     if (v) {
+         free(v->val);
+@@ -307,7 +307,7 @@ int picolSetVar(struct picolInterp *i, char *name, char *val) {
+     return PICOL_OK;
+ }
+ 
+-struct picolCmd *picolGetCommand(struct picolInterp *i, char *name) {
++struct picolCmd *picolGetCommand(struct picolInterp *i, const char *name) {
+     struct picolCmd *c = i->commands;
+     while(c) {
+         if (strcmp(c->name,name) == 0) return c;
+@@ -316,7 +316,7 @@ struct picolCmd *picolGetCommand(struct picolInterp *i, char *name) {
+     return NULL;
+ }
+ 
+-int picolRegisterCommand(struct picolInterp *i, char *name, picolCmdFunc f, void *privdata) {
++int picolRegisterCommand(struct picolInterp *i, const char *name, picolCmdFunc f, void *privdata) {
+     struct picolCmd *c = picolGetCommand(i,name);
+     char errbuf[1024];
+     if (c) {
+@@ -341,7 +341,7 @@ int picolRegisterCommand(struct picolInterp *i, char *name, picolCmdFunc f, void
+ }
+ 
+ /* EVAL! */
+-int picolEval(struct picolInterp *i, char *t) {
++int picolEval(struct picolInterp *i, const char *t) {
+     struct picolParser p;
+     int argc = 0, j;
+     char **argv = NULL;
+@@ -426,7 +426,7 @@ err:
+ }
+ 
+ /* ACTUAL COMMANDS! */
+-int picolArityErr(struct picolInterp *i, char *name) {
++int picolArityErr(struct picolInterp *i, const char *name) {
+     char buf[1024];
+     snprintf(buf,1024,"Wrong number of args for %s",name);
+     picolSetResult(i,buf);
+@@ -528,7 +528,7 @@ int picolCommandCallProc(struct picolInterp *i, int argc, char **argv, void *pd)
+     i->callframe = cf;
+     tofree = p;
+     while(1) {
+-        char *start = p;
++        const char *start = p;
+         while(*p != ' ' && *p != '\0') p++;
+         if (*p != '\0' && p == start) {
+             p++; continue;
+@@ -587,7 +587,7 @@ int picolCommandReturn(struct picolInterp *i, int argc, char **argv, void *pd) {
+ }
+ 
+ void picolRegisterCoreCommands(struct picolInterp *i) {
+-    int j; char *name[] = {"+","-","*","/",">",">=","<","<=","==","!="};
++    int j; const char *name[] = {"+","-","*","/",">",">=","<","<=","==","!="};
+     for (j = 0; j < (int)(sizeof(name)/sizeof(char*)); j++)
+         picolRegisterCommand(i,name[j],picolCommandMath,NULL);
+     picolRegisterCommand(i,"set",picolCommandSet,NULL);
+-- 
+2.45.2
+
