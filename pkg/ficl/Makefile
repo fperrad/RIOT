@@ -1,6 +1,6 @@
 PKG_NAME = ficl
 PKG_URL = https://github.com/jwsadler58/ficl.git
-PKG_VERSION = 59a03fae46c342edd173fcb9bacdebdf3c34ded2 # ficl306-166-g59a03fa
+PKG_VERSION = 59a03fae46c342edd173fcb9bacdebdf3c34ded2 # ficl3065
 
 PKG_LICENSE=BSD-3-Clause
 
